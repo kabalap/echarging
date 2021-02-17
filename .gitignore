@@ -1,0 +1,14 @@
+
+*.dll
+
+*.exe
+
+*.xml
+
+*.cache
+
+echarging/.vs/echarging/v16/.suo
+
+echarging/echarging/bin/Debug/netcoreapp3.1/echarging.pdb
+
+echarging/echarging/obj/project.assets.json

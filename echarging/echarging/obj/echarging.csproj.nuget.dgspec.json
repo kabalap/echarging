@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Kasper\\source\\repos\\echarging\\echarging\\echarging.csproj": {}
+    "C:\\Users\\Kasper\\Desktop\\echarging\\echarging\\echarging\\echarging.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Kasper\\source\\repos\\echarging\\echarging\\echarging.csproj": {
+    "C:\\Users\\Kasper\\Desktop\\echarging\\echarging\\echarging\\echarging.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Kasper\\source\\repos\\echarging\\echarging\\echarging.csproj",
+        "projectUniqueName": "C:\\Users\\Kasper\\Desktop\\echarging\\echarging\\echarging\\echarging.csproj",
         "projectName": "echarging",
-        "projectPath": "C:\\Users\\Kasper\\source\\repos\\echarging\\echarging\\echarging.csproj",
+        "projectPath": "C:\\Users\\Kasper\\Desktop\\echarging\\echarging\\echarging\\echarging.csproj",
         "packagesPath": "C:\\Users\\Kasper\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Kasper\\source\\repos\\echarging\\echarging\\obj\\",
+        "outputPath": "C:\\Users\\Kasper\\Desktop\\echarging\\echarging\\echarging\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -40,6 +40,30 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
+          "dependencies": {
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[3.1.11, )"
+            },
+            "Microsoft.AspNetCore.Identity.UI": {
+              "target": "Package",
+              "version": "[3.1.11, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[3.1.11, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[3.1.11, )"
+            },
+            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
+              "target": "Package",
+              "version": "[3.1.5, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
