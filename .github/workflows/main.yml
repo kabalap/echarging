@@ -28,10 +28,13 @@ jobs:
       with:
         dotnet-version: 5.0.x
     - name: Restore dependencies
+      working-directory: /echarging
       run: dotnet restore
     - name: Build
+      working-directory: /echarging
       run: dotnet build --no-restore
     - name: Test
+      working-directory: /echarging
       run: dotnet test --no-build --verbosity normal
     - name: Update echarging.me
       uses: fifsky/ssh-action@master
