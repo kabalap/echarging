@@ -5,11 +5,16 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.EntityFrameworkCore;
+using echarging.Models;
 using echarging.Data;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+using Microsoft.AspNetCore.Identity;
+using MySql.Data.EntityFramework;
 
 namespace echarging
 {
@@ -28,7 +33,7 @@ namespace echarging
             services.AddRazorPages();
 
             services.AddDbContext<echargingContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("echargingContext")));
+                    options.UseMySQL("Server=127.0.0.1;Port=3306;Database=echarging;User=b607;Pwd=password;Connection Timeout = 120;"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
