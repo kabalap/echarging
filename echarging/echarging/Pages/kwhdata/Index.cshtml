@@ -1,0 +1,174 @@
+﻿@page
+@model echarging.Pages.kwhdata.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Kwh[0].T13)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Kwh[0].T14)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Kwh[0].T15)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Kwh[0].T16)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Kwh[0].T17)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Kwh[0].T18)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Kwh[0].T19)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Kwh[0].T20)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Kwh[0].T21)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Kwh[0].T22)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Kwh[0].T23)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Kwh[0].T00)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Kwh[0].T01)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Kwh[0].T02)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Kwh[0].T03)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Kwh[0].T04)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Kwh[0].T05)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Kwh[0].T06)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Kwh[0].T07)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Kwh[0].T08)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Kwh[0].T09)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Kwh[0].T10)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Kwh[0].T11)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Kwh[0].T12)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Kwh) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.T13)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.T14)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.T15)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.T16)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.T17)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.T18)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.T19)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.T20)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.T21)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.T22)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.T23)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.T00)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.T01)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.T02)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.T03)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.T04)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.T05)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.T06)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.T07)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.T08)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.T09)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.T10)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.T11)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.T12)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Date">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Date">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Date">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
