@@ -6,7 +6,7 @@ using echarging.Data;
 using echarging.Models;
 
 
-namespace unibook.Data
+namespace echarging.Data
 {
     public class DbInitializer
     {
