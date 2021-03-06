@@ -43,24 +43,24 @@
                 </div>
             </form>
         </div>
-                <div class="col-lg-9">
-                    <div class="mb-3">
-                        <div class="container">
-                            <div class="embed-responsive embed-responsive">
-                                <!-- div "kontrollerer" vores kort-->
-                                <div id="mapid"> </div>
+        <div class="col-lg-9">
+            <div class="mb-3">
+                <div class="container">
+                    <div class="embed-responsive embed-responsive">
+                        <!-- div "kontrollerer" vores kort-->
+                        <div id="mapid"> </div>
 
-                                <!-- Dette script laver vores kort. Access token er blevet generet ved mapbox-->
-                                <script>var mymap = L.map('mapid').setView([55.6760968, 12.5683371], 13);
-                                    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-                                        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                                    }).addTo(mymap);</script>
-                                <div class="col"></div>
-                            </div>
-                        </div>
+                        <!-- Dette script laver vores kort. Access token er blevet generet ved mapbox-->
+                        <script>
+    var mymap = L.map('mapid').setView([55.6760968, 12.5683371], 13);
+                            L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                                attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                            }).addTo(mymap);</script>
+                        <div class="col"></div>
                     </div>
                 </div>
-           
+            </div>
+        </div>
     </div>
 </div>
 
