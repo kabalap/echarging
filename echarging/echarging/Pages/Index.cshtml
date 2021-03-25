@@ -11,58 +11,26 @@
 <style>
     #mapid {
         height: 480px;
-        width: 720px;
+        width: 1000px;
     }
 </style>
 
 <div class="container">
-    <div class="row">
-        <div class="col-lg-3">
-            <form>
-                <div class="mb-3">
-                    <input type="text" class="form-control form-control-md" id="startposition" placeholder="Startposition">
-                </div>
-                <div class="mb-3">
-                    <input type="text" class="form-control form-control-md" id="destination" placeholder="Destination">
-                </div>
-                <div class="mb-3">
-                    <select class="custom-select custom-select mb-3" id="stiktype">
-                        <option selected>Stiktype</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                    </select>
-                    <div class="mb-3">
-                        <select class="custom-select custom-select mb-3" id="udbyder">
-                            <option selected>Udbyder</option>
-                            <option value="1">Clever</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
-                        </select>
-                    </div>
-                </div>
-            </form>
-        </div>
-                <div class="col-lg-9">
-                    <div class="mb-3">
-                        <div class="container">
-                            <div class="embed-responsive embed-responsive">
-                                <!-- div "kontrollerer" vores kort-->
-                                <div id="mapid"> </div>
+    <div class="embed-responsive embed-responsive">
+        <!-- div "kontrollerer" vores kort-->
+        
+        <div id="mapid"> </div>
 
-                                <!-- Dette script laver vores kort. Access token er blevet generet ved mapbox-->
-                                <script>var mymap = L.map('mapid').setView([55.6760968, 12.5683371], 13);
+        <!-- Dette script laver vores kort. Access token er blevet generet ved mapbox-->
+        <script>var mymap = L.map('mapid').setView([55.6760968, 12.5683371], 13);
                                     L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
                                         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                                     }).addTo(mymap);</script>
-                                <div class="col"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-           
+        
     </div>
 </div>
+                    
+   
 
 
 
