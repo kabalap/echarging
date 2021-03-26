@@ -14,7 +14,7 @@ namespace echarging.Pages
 {
     public class localRouting
     {
-
+        /*
         public void createRouting()
         {
             // load some routing data and build a routing network.
@@ -38,5 +38,6 @@ namespace echarging.Pages
 // calculate a route.
             var route = router.Calculate(profile, start, end);
         }
+        */
     }
 }
