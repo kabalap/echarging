@@ -15,7 +15,7 @@ namespace echarging.Pages
     public class publicRouting
     {
 
-        public createRouting()
+        public void createRouting()
         {
             // load some routing data and build a routing network.
             var routerDb = new RouterDb();
