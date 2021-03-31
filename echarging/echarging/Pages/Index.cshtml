@@ -7,17 +7,56 @@
 
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
         integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-        crossorigin=""></script>
+        crossorigin=""></script>       
+
 <style>
-    #mapid {
-        height: 480px;
-        width: 1000px;
-    }
+
+ #mapid { 
+ width: 100vw; 
+ height:  100vh;
+ position: relative;
+ }
+ 
+ .formBlock {
+ max-width: 300px;
+ background-color: #fff;
+ border: 1px solid #ddd;
+ position: absolute;
+ top: 10px;
+ left: 10px;
+ padding: 10px;
+ z-index: 999;
+ box-shadow: 0 1px 5px rgba(0,0,0,0.65);
+ border-radius: 5px;
+ width: 100%;
+ }
+ 
+ .input {
+ padding: 10px;
+ margin-bottom: 5px;
+ width: 100%;
+ border: 1px solid #ddd;
+ font-size: 15px;
+ border-radius: 3px;   
+ }
+ 
+ .leaflet-top .leaflet-control {
+  margin-top: 175px;
+ }
+ 
 </style>
 
-<form method="post">
-    <button type="submit" class="btn btn-dark" asp-page-handler="Go">Go</button>
-</form>
+
+<div class="col-6">  
+    <div class="formBlock">
+        <form method="post" id="form">
+            <input type="text" name="start" class="input" id="start" placeholder="Startposition"/>
+            <input type="text" name="end" class="input" id="destination" placeholder="Destination"/>
+            <button type="submit" class="btn btn-dark" asp-page-handler="Go">Find rute</button>
+        </form>
+        </div>
+</div>
+
 
 <div class="embed-responsive embed-responsive">
     <!-- div "kontrollerer" vores kort-->
