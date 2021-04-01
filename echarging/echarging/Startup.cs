@@ -22,9 +22,7 @@ namespace echarging
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
-            services.AddDbContext<echargingContext>(options =>
-                    options.UseMySQL("Server=127.0.0.1;Port=3306;Database=UnibookDatter;User=root;Pwd=Gutterne2020;Connection Timeout = 120;"));
-        }
+         
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
