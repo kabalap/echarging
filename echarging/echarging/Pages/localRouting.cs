@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -9,19 +10,18 @@ using Itinero;
 using Itinero.IO.Osm;
 using Itinero.Osm.Vehicles;
 
-
+/*
 namespace echarging.Pages
 {
     public class localRouting
     {
-        /*
         public void createRouting()
         {
             // load some routing data and build a routing network.
             var routerDb = new RouterDb();
-            using (var stream = new FileInfo(@"/path/to/some/osmfile.osm.pbf").OpenRead())
+            using (var stream = new FileInfo(@"/Users/Kasper/Desktop/osm/output/routing.routerdb").OpenRead())
             {
-                routerDb.LoadOsmData(stream, Vehicle.Car); // create the network for cars only.
+                routerDb = RouterDb.Deserialize(stream, RouterDbProfile.NoCache); // create the network for cars only.
             }
 
             // create a router.
@@ -38,6 +38,6 @@ namespace echarging.Pages
 // calculate a route.
             var route = router.Calculate(profile, start, end);
         }
-        */
     }
 }
+*/
