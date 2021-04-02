@@ -20,3 +20,5 @@ echarging/echarging/obj/project.assets.json
 *.v2
 
 echarging/.idea/.idea.echarging/.idea/riderModule.iml
+
+*.user
