@@ -22,3 +22,7 @@ echarging/echarging/obj/project.assets.json
 echarging/.idea/.idea.echarging/.idea/riderModule.iml
 
 *.user
+
+*.pdb
+
+*.txt
