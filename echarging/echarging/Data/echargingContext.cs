@@ -14,10 +14,9 @@ namespace echarging.Data
         }
 
         public DbSet<Kwh> Kwh { get; set; }
-
-        protected override void OnModelCreating(ModelBuilder modelbuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelbuilder.Entity<Kwh>().ToTable("Kwhdata");
+            modelBuilder.Entity<Kwh>().ToTable("Kwh");
         }
     }
 }
