@@ -7,8 +7,10 @@
 
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
         integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-        crossorigin=""></script>       
+        crossorigin=""></script>
 
+<!-- vi kalder scriptet her. Det er placeret i wwwroot/js/location.js, for at asp.net kan finde ud af det.-->
+<script src="js/location.js"></script> 
 <style>
 
  #mapid { 
@@ -52,20 +54,31 @@
         <form method="post" id="form">
             <input type="text" name="start" class="input" id="start" placeholder="Startposition"/>
             <input type="text" name="end" class="input" id="destination" placeholder="Destination"/>
-            <button type="submit" class="btn btn-dark" asp-page-handler="Go">Find rute</button>
+            <button type="submit" class="btn btn-dark" asp-page-handler="Go">Find rute </button>
         </form>
         </div>
 </div>
 
 
 <div class="embed-responsive embed-responsive">
-    <!-- div "kontrollerer" vores kort-->
 
+    <!-- div "kontrollerer" vores kort-->
     <div id="mapid"> </div>
 
-    <!-- Dette script laver vores kort. Access token er blevet generet ved mapbox-->
-    <script>var mymap = L.map('mapid').setView([55.6760968, 12.5683371], 13);
+    <!-- Dette script laver vores kort.-->
+    <script>
+    var mymap = L.map('mapid').setView([55.6760968, 12.5683371], 13);
                                     L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
                                         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                                    }).addTo(mymap);</script>
+                                    }).addTo(mymap);
+                                    <!-- vi laver et layer, som er baseret på vores punkter i .js filen. chargers er variablen for alle punkterne -->
+                                    L.geoJson(chargers, {
+                                            style: function (feature) {
+                                                return { color: feature.properties.color };
+                                            },
+                                            onEachFeature: function (feature, layer) {
+                                                layer.bindPopup(feature.properties.description);
+                                            }
+                                    }).addTo(mymap);
+                            </script>
 </div>
