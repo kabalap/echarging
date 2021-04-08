@@ -6,10 +6,7 @@
 
   <ItemGroup>
     <None Remove="locations\location.geojson" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="locations\location.geojson" />
+    <None Include="wwwroot\js\location.js" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,8 +21,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="locations" />
     <Folder Include="Migration\" />
     <Folder Include="Areas\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Pages\location.geojson" />
   </ItemGroup>
 
 </Project>
