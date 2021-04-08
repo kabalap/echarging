@@ -1,6 +1,11 @@
 ﻿@page
 @model IndexModel
 @{ ViewData["Title"] = "Home page"; }
+<head>
+    <meta charset="UTF-8">
+        
+    </meta>
+</head>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
       integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
       crossorigin=""/>
@@ -54,10 +59,12 @@
         <form method="post" id="form">
             <input type="text" name="start" class="input" id="start" placeholder="Startposition"/>
             <input type="text" name="end" class="input" id="destination" placeholder="Destination"/>
-            <button type="submit" class="btn btn-dark" asp-page-handler="Go">Find rute :) </button>
+            <button type="submit" class="btn btn-dark" asp-page-handler="Go">Find rute </button>
         </form>
-        </div>
+    </div>
 </div>
+
+
 
 
 <div class="embed-responsive embed-responsive">
@@ -77,8 +84,14 @@
                                                 return { color: feature.properties.color };
                                             },
                                             onEachFeature: function (feature, layer) {
-                                                layer.bindPopup(feature.properties.description);
+                                                layer.bindPopup("<b>" + "Adresse: " + "</b>" + feature.properties.vejnavn + " " + feature.properties.husnr + "<br>" + "<b>" + "Udbyder: " + "</b>" 
+                                                + feature.properties.operator + "<br>" + "<b>" + "Effekt: " + "</b>" + feature.properties.ladestandertype);
                                             }
                                     }).addTo(mymap);
+     
                             </script>
+    
+    
 </div>
+
+
