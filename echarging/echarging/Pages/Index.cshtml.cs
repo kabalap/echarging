@@ -32,8 +32,6 @@ namespace echarging.Pages
         {
             var routerDb = RouterDb.Deserialize(stream, RouterDbProfile.NoCache);
             routerDb.AddContracted(routerDb.GetSupportedProfile("car"));
-
-
             return Page();
         }
         */
@@ -66,28 +64,27 @@ namespace echarging.Pages
         public IActionResult OnPostWin()
         {
             // load some routing data and build a routing network.
-            var routerDb = new RouterDb();
             using (var stream = new FileInfo(@"/Users/Kasper/Desktop/osm/output/routing.routerdb").OpenRead())
             {
-                routerDb = RouterDb.Deserialize(stream, RouterDbProfile.NoCache); // create the network for cars only.
-            }
+                var routerDb = RouterDb.Deserialize(stream, RouterDbProfile.NoCache); // create the network for cars only.
+                // create a router.
+                var router = new Router(routerDb);
 
-            // create a router.
-            var router = new Router(routerDb);
+                // get a profile.
+                var profile = Vehicle.Car.Fastest(); // the default OSM car profile.
 
-// get a profile.
-            var profile = Vehicle.Car.Fastest(); // the default OSM car profile.
+                // create a routerpoint from a location.
+                // snaps the given location to the nearest routable edge.
+                var start = router.Resolve(profile, 57.0408543119709f, 9.946265898566171f);
+                var end = router.Resolve(profile, 55.663868644187815f, 12.412232911856966f);
 
-// create a routerpoint from a location.
-// snaps the given location to the nearest routable edge.
-            var start = router.Resolve(profile, 51.26797020271655f, 4.801905155181885f);
-            var end = router.Resolve(profile, 52.26797020271655f, 4.801005155181885f);
-
-// calculate a route.
-            var route = router.Calculate(profile, start, end);
-            using (var stream = new FileInfo(@"/Users/Kasper/Desktop/osm/output/routing.routerdb").OpenRead())
-            {
-                route.ToGeoJson();
+                // calculate a route.
+                var route = router.Calculate(profile, start, end);
+                using (var writer = new StreamWriter(@"/Users/Kasper/Desktop/osm/output/route.geojson"))
+                {
+                    route.WriteGeoJson(writer);
+                }
+                
             }
             return null;
         }

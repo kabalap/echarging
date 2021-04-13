@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using System.IO;
 using Itinero;
 using Itinero.IO.Osm;
 using Itinero.Osm.Vehicles;
@@ -37,7 +38,12 @@ namespace echarging.Pages
 
 // calculate a route.
             var route = router.Calculate(profile, start, end);
+            using (var writer = new StreamWriter(@"route.geojson"))
+            {
+                route.WriteGeoJson(writer);
+            }
         }
-        */
+         */
     }
+   
 }
