@@ -10,13 +10,14 @@ using Itinero;
 using Itinero.IO.Osm;
 using Itinero.Osm.Vehicles;
 
-/*
+
 namespace echarging.Pages
 {
     public class localRouting
     {
         public void createRouting()
         {
+            /*
             // load some routing data and build a routing network.
             var routerDb = new RouterDb();
             using (var stream = new FileInfo(@"/Users/Kasper/Desktop/osm/output/routing.routerdb").OpenRead())
@@ -37,7 +38,11 @@ namespace echarging.Pages
 
 // calculate a route.
             var route = router.Calculate(profile, start, end);
+            using (var writer = new StreamWriter(@"/Users/Kasper/Desktop/osm/output/route.geojson"))
+            {
+                route.WriteGeoJson(writer);
+            }
+            */
         }
     }
 }
-*/
