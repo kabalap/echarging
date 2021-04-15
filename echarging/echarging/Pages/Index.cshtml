@@ -86,10 +86,27 @@
                                             onEachFeature: function (feature, layer) {
                                                 layer.bindPopup("<b>" + "Adresse: " + "</b>" + feature.properties.vejnavn + " " + feature.properties.husnr + "<br>" + "<b>" + "Udbyder: " + "</b>" 
                                                 + feature.properties.operator + "<br>" + "<b>" + "Effekt: " + "</b>" + feature.properties.ladestandertype);
-                                            }
+                                            },  
+                                            
                                     }).addTo(mymap);
+                                    
+                                    var routeDatter = JSON.parse(@Json.Serialize(ViewData["route"]));
+                                    if (routeDatter) {
+                                        // tegn routeDatter her
+                                        // tegn streger hererheh 
+                                        // hvor giver man geojson objektet med ja deeet ??? ???? 
+                                        L.Polyline.Red = L.Polyline.extend(routeDatter, {
+                                            onAdd: function(mymap) {
+                                                this.options.color = 'red';
+                                                L.Polyline.prototype.onAdd.call(this, mymap);
+                                        }}).addTo(mymap);
+                                    // du kan ikke bare slette ham her like so i think
+                                    }
+                                      
+    
+    
      
-                            </script>
+                                         </script>
     
     
 </div>

@@ -26,6 +26,7 @@ namespace echarging.Pages
 
         public void OnGet()
         {
+            ViewData["route"] = "{}";
         }
         /*
         public IActionResult OnPostGo()
@@ -49,7 +50,7 @@ namespace echarging.Pages
 */
 
             // write the routerdb to disk.
-            using (var stream = new FileInfo(@"Users/Kasper/Desktop/osm/output/routing.routerdb").Open(FileMode.Create))
+            using (var stream = new FileInfo(@"Users/kasperhansen/Desktop/osm/output/routing.routerdb").Open(FileMode.Create))
             {
                 var routerDb = new RouterDb();
                     routerDb.Serialize(stream);
@@ -62,6 +63,28 @@ namespace echarging.Pages
         }
 
         public IActionResult OnPostWin()
+        {
+            // load some routing data and build a routing network.
+            using var stream = new FileInfo(@"/Users/kasperhansen/Desktop/osm/output/routing.routerdb").OpenRead();
+            var routerDb = RouterDb.Deserialize(stream, RouterDbProfile.NoCache); // create the network for cars only.
+            // create a router.
+            var router = new Router(routerDb);
+
+            // get a profile.
+            var profile = Vehicle.Car.Fastest(); // the default OSM car profile.
+
+            // create a routerpoint from a location.
+            // snaps the given location to the nearest routable edge.
+            var start = router.Resolve(profile, 57.0408543119709f, 9.946265898566171f);
+            var end = router.Resolve(profile, 55.663868644187815f, 12.412232911856966f);
+
+            // calculate a route.
+            ViewData["route"] = router.Calculate(profile, start, end).ToGeoJson();
+            return Page();
+        }
+        
+        /*
+        public string Routing()
         {
             // load some routing data and build a routing network.
             using (var stream = new FileInfo(@"/Users/Kasper/Desktop/osm/output/routing.routerdb").OpenRead())
@@ -80,13 +103,10 @@ namespace echarging.Pages
 
                 // calculate a route.
                 var route = router.Calculate(profile, start, end);
-                using (var writer = new StreamWriter(@"/Users/Kasper/Desktop/osm/output/route.geojson"))
-                {
-                    route.WriteGeoJson(writer);
-                }
-                
+                var routing = route.ToJson();
+                return routing; 
             }
-            return null;
         }
+        */
     }
 }
