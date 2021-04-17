@@ -9,7 +9,7 @@ using System.IO;
 using Itinero;
 using Itinero.IO.Osm;
 using Itinero.Osm.Vehicles;
-
+using Newtonsoft.Json;
 
 
 namespace echarging.Pages
@@ -62,7 +62,7 @@ namespace echarging.Pages
             
         }
 
-        public IActionResult OnPostWin()
+        public IActionResult<> OnPostWin()
         {
             // load some routing data and build a routing network.
             using var stream = new FileInfo(@"/Users/kasperhansen/Desktop/osm/output/routing.routerdb").OpenRead();
@@ -103,8 +103,15 @@ namespace echarging.Pages
 
                 // calculate a route.
                 var route = router.Calculate(profile, start, end);
-                var routing = route.ToJson();
-                return routing; 
+                using (var writer = new StreamWriter(@"/Users/Kasper/Desktop/osm/output/route.geojson"))
+                {
+                    route.WriteGeoJson(writer);
+                }
+
+                string allText = System.IO.File.ReadAllText(@"/Users/Kasper/Desktop/osm/output/route.geojson");
+                object jsonObject = JsonConvert.DeserializeObject(allText);
+                return jsonObject;
+
             }
         }
         */
