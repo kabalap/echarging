@@ -9,9 +9,7 @@ using Itinero.Osm.Vehicles;
 using NetTopologySuite.Features;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
-using ProjNet;
-using ProjNet.CoordinateSystems;
-using System.Collections.Generic;
+
 
 namespace echarging.Pages
 {
@@ -82,53 +80,7 @@ namespace echarging.Pages
             // Convert from Itinero data format to NTS format such the data can be projected and buffered
             var features = router.Calculate(profile, start, end).ToFeatureCollection();
             // Remember to project data before buffer
-
-            //Lav et relevant objekt til koordinatsystem.
-            var cFac = new CoordinateSystemFactory();
-
-            //reference elipsoid
-            var ellipsoid = cFac.CreateFlattenedSphere("GRS 1980", 727570.82, 6493558.34, LinearUnit.Metre);
-
-            //Lav datum
-            var datum = cFac.CreateHorizontalDatum("GRS 1980", DatumType.HD_Geocentric, ellipsoid, null);
-
-            //Geografisk koordinatsystem
-            var gcs = cFac.CreateGeographicCoordinateSystem(
-                "GRS 1980",
-                AngularUnit.Degrees,
-                datum,
-                PrimeMeridian.Greenwich,
-                new AxisInfo("Lon", AxisOrientationEnum.East),
-                new AxisInfo("Lat", AxisOrientationEnum.North)
-                );
-            //Lav et projected koordinatsystem
-
-            //Projection parametere
-            var parameters = new List<ProjectionParameter>(5);
-            parameters.Add(new ProjectionParameter("latitude_of_origin", 0));
-            parameters.Add(new ProjectionParameter("central_meridian", 110));
-            parameters.Add(new ProjectionParameter("scale_factor", 0.997));
-            parameters.Add(new ProjectionParameter("false_easting", 3900000));
-            parameters.Add(new ProjectionParameter("false_norting", 900000));
-
-            //Projection definition
-            var projection = cFac.CreateProjection(
-                "MercatorProjection", //Custom name???
-                "Mercator_1SP", //Projection metode
-                parameters
-                );
-
-            // projection koordinatsystem
-            var pcs = cFac.CreateProjectedCoordinateSystem(
-                "Makassar / NEIEZ", //Custom name
-                gcs,
-                projection,
-                LinearUnit.Metre,
-                new AxisInfo("East", AxisOrientationEnum.East),
-                new AxisInfo("North", AxisOrientationEnum.North)
-                );
-
-
+            
             var coordinates = features.Select(x => x.Geometry)
                 .SelectMany(x => x.Coordinates)
                 .ToArray();
@@ -140,6 +92,17 @@ namespace echarging.Pages
             var chargingStations = reader.Read<FeatureCollection>(json)
                 .Select(x => x.Geometry)
                 .Where(x => x.Intersects(bufferedData));
+
+            //var poi = o2.Where(o2 => o2.Intersects(bufferedData));
+        
+        
+            /*
+            using (StreamReader r = new StreamReader("charge.json"))
+            {
+                string json = r.ReadToEnd();
+            }
+            */
+
 
 
 
