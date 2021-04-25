@@ -89,18 +89,30 @@
                                             },  
                                             
                                     }).addTo(mymap);
+                                    geocoder = L.Control.Geocoder.dawa({
+                                    geocodingQueryParams: {kommunekode: '0101'},
+                                    wildcard: true}),
+                                    control = L.Control.geocoder({
+                                    geocoder: geocoder
+                                    }).addTo(mymap)
+                                    /*                                      
+                                    mymap.on('click',function(e){
+                                    var coord=e.latlng.toString().split(',');
+                                    var lat=coord[0].split('(');
+                                    var long=coord[1].split(')');
+                                    alert("you clicked the map at LAT: "+ lat[1]+" and LONG:"+long[0])
+                                    })
                                     
+                                    */
+                                     
                                     var routeDatter = JSON.parse(@Json.Serialize(ViewData["route"]));
                                     if (routeDatter) {
                                         // tegn routeDatter her
-                                        // tegn streger hererheh 
-                                        // hvor giver man geojson objektet med ja deeet ??? ???? 
                                        L.geoJSON(routeDatter).addTo(mymap);
                                         
                                         console.log();
          
         
-                                    // du kan ikke bare slette ham her like so i think
                                     }
                                       
     
