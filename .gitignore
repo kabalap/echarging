@@ -28,3 +28,7 @@ echarging/.idea/.idea.echarging/.idea/riderModule.iml
 *.cshtml.g.cs
 
 *.txt
+
+.vs/echarging/v16/
+
+.vs/
