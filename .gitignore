@@ -32,3 +32,5 @@ echarging/.idea/.idea.echarging/.idea/riderModule.iml
 .vs/echarging/v16/
 
 .vs/
+
+*.csproj

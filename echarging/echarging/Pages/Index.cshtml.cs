@@ -12,6 +12,10 @@ using NetTopologySuite.IO;
 using ProjNet;
 using ProjNet.CoordinateSystems;
 using System.Collections.Generic;
+using ProjNet.CoordinateSystems.Transformations;
+using GeoAPI;
+using GeoAPI.CoordinateSystems.Transformations;
+
 
 namespace echarging.Pages
 {
@@ -65,8 +69,10 @@ namespace echarging.Pages
 
         public IActionResult OnPostWin()
         {
+            var startPosition = Request.Form["start"];
+            var destination = Request.Form["destination"];
             // load some routing data and build a routing network.
-            using var stream = new FileInfo(@"/Users/Kasper/Desktop/osm/output/routing.routerdb").OpenRead();
+            using var stream = new FileInfo(@"/Users/kasperhansen/Desktop/osm/output/routing.routerdb").OpenRead();
             var routerDb = RouterDb.Deserialize(stream, RouterDbProfile.NoCache); // create the network for cars only.
             // create a router.
             var router = new Router(routerDb);  
@@ -81,8 +87,32 @@ namespace echarging.Pages
             
             // Convert from Itinero data format to NTS format such the data can be projected and buffered
             var features = router.Calculate(profile, start, end).ToFeatureCollection();
+            
+            string wktDK = "PROJCS[\"ETRS89 / DKTM4\",GEOGCS[\"ETRS89\",DATUM[\"European_Terrestrial_Reference_System_1989\"," +
+                "SPHEROID[\"GRS 1980\",6378137,298.257222101," +
+                "AUTHORITY[\"EPSG\",\"7019\"]],TOWGS84[0,0,0,0,0,0,0],AUTHORITY[\"EPSG\",\"6258\"]],PRIMEM[\"Greenwich\",0," +
+                "AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433," +
+                "AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4258\"]],PROJECTION[\"Transverse_Mercator\"]," +
+                "PARAMETER[\"latitude_of_origin\",0],PARAMETER[\"central_meridian\",15]," +
+                "PARAMETER[\"scale_factor\",1],PARAMETER[\"false_easting\",800000],PARAMETER[\"false_northing\",-5000000]," +
+                "UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH]," +
+                "AUTHORITY[\"EPSG\",\"4096\"]]";
+            GeoAPI.CoordinateSystems.ICoordinateSystem csDK =    
+                ProjNet.Converters.WellKnownText.CoordinateSystemWktReader.Parse(wktDK) as GeoAPI.CoordinateSystems.ICoordinateSystem;
+            
+            string wktWorld = "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563," +
+                "AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]]," +
+                "PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433," +
+                "AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4326\"]]";
+            GeoAPI.CoordinateSystems.ICoordinateSystem csWorld =    
+                ProjNet.Converters.WellKnownText.CoordinateSystemWktReader.Parse(wktWorld) as GeoAPI.CoordinateSystems.ICoordinateSystem;
+            
+            CoordinateTransformationFactory ctfac = new CoordinateTransformationFactory();
+            ICoordinateTransformation trans = ctfac.CreateFromCoordinateSystems(csDK, csWorld);
+            double[] fromPoint = new double[] { -16.1, 32.88 };
+            double[] toPoint = trans.MathTransform.Transform(fromPoint);
             // Remember to project data before buffer
-
+            /*
             //Lav et relevant objekt til koordinatsystem.
             var cFac = new CoordinateSystemFactory();
 
@@ -127,7 +157,7 @@ namespace echarging.Pages
                 new AxisInfo("East", AxisOrientationEnum.East),
                 new AxisInfo("North", AxisOrientationEnum.North)
                 );
-
+*/
 
             var coordinates = features.Select(x => x.Geometry)
                 .SelectMany(x => x.Coordinates)
@@ -135,18 +165,21 @@ namespace echarging.Pages
             var lineString = GeometryFactory.Default.CreateLineString(coordinates);
             var bufferedData = lineString.Buffer(200);
             var json = System.IO.File.ReadAllText(
-                "/Users/kasper/Desktop/echarging/echarging/echarging/Pages/charge.json");
+                "/Users/kasperhansen/Desktop/echarging/echarging/echarging/Pages/charge.json");
             var reader = new GeoJsonReader();
             var chargingStations = reader.Read<FeatureCollection>(json)
                 .Select(x => x.Geometry)
                 .Where(x => x.Intersects(bufferedData));
 
-
+            
 
             // calculate a route.
             ViewData["route"] = router.Calculate(profile, start, end).ToGeoJson();
             return Page();
+            
         }
+        
+        
         
         /*
         public string Routing()
