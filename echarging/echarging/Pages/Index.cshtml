@@ -3,7 +3,7 @@
 @{ ViewData["Title"] = "Home page"; }
 <head>
     <meta charset="UTF-8">
-
+        
     </meta>
 </head>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
@@ -15,7 +15,7 @@
         crossorigin=""></script>
 
 <!-- vi kalder scriptet her. Det er placeret i wwwroot/js/location.js, for at asp.net kan finde ud af det.-->
-<script src="js/location.js"></script>
+<script src="js/location.js"></script> 
 <style>
 
  #mapid { 
@@ -54,7 +54,7 @@
 </style>
 
 
-<div class="col-6">
+<div class="col-6">  
     <div class="formBlock">
         <form method="post" id="form">
             <input type="text" name="start" class="input" id="start" placeholder="Startposition"/>
@@ -63,6 +63,8 @@
         </form>
     </div>
 </div>
+
+
 
 
 <div class="embed-responsive embed-responsive">
@@ -105,17 +107,20 @@
                                      
                                     var routeDatter = JSON.parse(@Json.Serialize(ViewData["route"]));
                                     if (routeDatter) {
-
                                         // tegn routeDatter her
                                        L.geoJSON(routeDatter).addTo(mymap);
                                         
-                                       console.log();
+                                        console.log();
+         
+        
                                     }
                                       
     
     
      
                                          </script>
-
-
+    
+    
 </div>
+
+

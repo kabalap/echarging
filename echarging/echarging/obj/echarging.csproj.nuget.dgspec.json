@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/Users/kasperhansen/Desktop/echarging/echarging/echarging/echarging.csproj": {}
+    "/Users/christianekiel/Desktop/echarging/echarging/echarging/echarging/echarging.csproj": {}
   },
   "projects": {
-    "/Users/kasperhansen/Desktop/echarging/echarging/echarging/echarging.csproj": {
+    "/Users/christianekiel/Desktop/echarging/echarging/echarging/echarging/echarging.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/kasperhansen/Desktop/echarging/echarging/echarging/echarging.csproj",
+        "projectUniqueName": "/Users/christianekiel/Desktop/echarging/echarging/echarging/echarging/echarging.csproj",
         "projectName": "echarging",
-        "projectPath": "/Users/kasperhansen/Desktop/echarging/echarging/echarging/echarging.csproj",
-        "packagesPath": "/Users/kasperhansen/.nuget/packages/",
-        "outputPath": "/Users/kasperhansen/Desktop/echarging/echarging/echarging/obj/",
+        "projectPath": "/Users/christianekiel/Desktop/echarging/echarging/echarging/echarging/echarging.csproj",
+        "packagesPath": "/Users/christianekiel/.nuget/packages/",
+        "outputPath": "/Users/christianekiel/Desktop/echarging/echarging/echarging/echarging/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/kasperhansen/.nuget/NuGet/NuGet.Config"
+          "/Users/christianekiel/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
@@ -38,6 +38,10 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "dependencies": {
+            "AspNet.ScriptManager.jQuery": {
+              "target": "Package",
+              "version": "[3.6.0, )"
+            },
             "Itinero": {
               "target": "Package",
               "version": "[1.6.0-pre031, )"
@@ -54,9 +58,9 @@
               "target": "Package",
               "version": "[1.6.0-pre031, )"
             },
-            "Microsoft.AspNet.WebPages": {
+            "Json.Net": {
               "target": "Package",
-              "version": "[3.2.7, )"
+              "version": "[1.0.25, )"
             },
             "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
               "target": "Package",
@@ -66,51 +70,29 @@
               "target": "Package",
               "version": "[3.1.11, )"
             },
-            "Microsoft.EntityFrameworkCore": {
-              "target": "Package",
-              "version": "[5.0.3, )"
-            },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
-              "version": "[3.1.11, )"
-            },
-            "Microsoft.EntityFrameworkCore.Sqlite": {
-              "target": "Package",
-              "version": "[3.1.11, )"
-            },
-            "Microsoft.EntityFrameworkCore.Tools": {
-              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
-              "suppressParent": "All",
-              "target": "Package",
-              "version": "[5.0.3, )"
+              "version": "[5.0.5, )"
             },
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
               "version": "[3.1.5, )"
             },
-            "MySql.Data": {
+            "NetTopologySuite.IO.GeoJSON": {
               "target": "Package",
-              "version": "[8.0.23, )"
+              "version": "[2.0.4, )"
             },
-            "MySql.Data.Entity": {
+            "ProjNET": {
               "target": "Package",
-              "version": "[7.0.7-m61, )"
+              "version": "[2.0.0, )"
             },
-            "MySql.Data.EntityFramework": {
+            "RazorScriptManager": {
               "target": "Package",
-              "version": "[8.0.22, )"
+              "version": "[0.7.0, )"
             },
-            "MySql.Data.EntityFrameworkCore": {
+            "jQuery": {
               "target": "Package",
-              "version": "[8.0.22, )"
-            },
-            "MySqlConnector": {
-              "target": "Package",
-              "version": "[1.2.1, )"
-            },
-            "Pomelo.EntityFrameworkCore.MySql": {
-              "target": "Package",
-              "version": "[5.0.0-alpha.2, )"
+              "version": "[3.6.0, )"
             }
           },
           "imports": [
@@ -123,12 +105,6 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[3.1.10, 3.1.10]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
