@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
@@ -9,13 +9,14 @@ using Itinero.Osm.Vehicles;
 using NetTopologySuite.Features;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
+/*
 using ProjNet;
 using ProjNet.CoordinateSystems;
 using System.Collections.Generic;
 using ProjNet.CoordinateSystems.Transformations;
 using GeoAPI;
 using GeoAPI.CoordinateSystems.Transformations;
-
+*/
 
 namespace echarging.Pages
 {
