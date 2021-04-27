@@ -28,3 +28,12 @@ echarging/.idea/.idea.echarging/.idea/riderModule.iml
 *.cshtml.g.cs
 
 *.txt
+<<<<<<< HEAD
+=======
+
+.vs/echarging/v16/
+
+.vs/
+
+*.csproj
+>>>>>>> main
