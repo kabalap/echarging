@@ -1,6 +1,7 @@
 {
   "format": 1,
   "restore": {
+<<<<<<< HEAD
     "/Users/kasperhansen/Desktop/echarging/echarging/echarging/echarging.csproj": {}
   },
   "projects": {
@@ -15,6 +16,22 @@
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/kasperhansen/.nuget/NuGet/NuGet.Config"
+=======
+    "/Users/christianekiel/Desktop/echarging/echarging/echarging/echarging/echarging.csproj": {}
+  },
+  "projects": {
+    "/Users/christianekiel/Desktop/echarging/echarging/echarging/echarging/echarging.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/christianekiel/Desktop/echarging/echarging/echarging/echarging/echarging.csproj",
+        "projectName": "echarging",
+        "projectPath": "/Users/christianekiel/Desktop/echarging/echarging/echarging/echarging/echarging.csproj",
+        "packagesPath": "/Users/christianekiel/.nuget/packages/",
+        "outputPath": "/Users/christianekiel/Desktop/echarging/echarging/echarging/echarging/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/christianekiel/.nuget/NuGet/NuGet.Config"
+>>>>>>> main
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
@@ -38,6 +55,13 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "dependencies": {
+<<<<<<< HEAD
+=======
+            "AspNet.ScriptManager.jQuery": {
+              "target": "Package",
+              "version": "[3.6.0, )"
+            },
+>>>>>>> main
             "Itinero": {
               "target": "Package",
               "version": "[1.6.0-pre031, )"
@@ -54,9 +78,15 @@
               "target": "Package",
               "version": "[1.6.0-pre031, )"
             },
+<<<<<<< HEAD
             "Microsoft.AspNet.WebPages": {
               "target": "Package",
               "version": "[3.2.7, )"
+=======
+            "Json.Net": {
+              "target": "Package",
+              "version": "[1.0.25, )"
+>>>>>>> main
             },
             "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
               "target": "Package",
@@ -66,6 +96,7 @@
               "target": "Package",
               "version": "[3.1.11, )"
             },
+<<<<<<< HEAD
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[5.0.3, )"
@@ -83,11 +114,17 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[5.0.3, )"
+=======
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[5.0.5, )"
+>>>>>>> main
             },
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
               "version": "[3.1.5, )"
             },
+<<<<<<< HEAD
             "MySql.Data": {
               "target": "Package",
               "version": "[8.0.23, )"
@@ -111,6 +148,23 @@
             "Pomelo.EntityFrameworkCore.MySql": {
               "target": "Package",
               "version": "[5.0.0-alpha.2, )"
+=======
+            "NetTopologySuite.IO.GeoJSON": {
+              "target": "Package",
+              "version": "[2.0.4, )"
+            },
+            "ProjNET": {
+              "target": "Package",
+              "version": "[2.0.0, )"
+            },
+            "RazorScriptManager": {
+              "target": "Package",
+              "version": "[0.7.0, )"
+            },
+            "jQuery": {
+              "target": "Package",
+              "version": "[3.6.0, )"
+>>>>>>> main
             }
           },
           "imports": [
@@ -123,12 +177,15 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+<<<<<<< HEAD
           "downloadDependencies": [
             {
               "name": "Microsoft.AspNetCore.App.Ref",
               "version": "[3.1.10, 3.1.10]"
             }
           ],
+=======
+>>>>>>> main
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"

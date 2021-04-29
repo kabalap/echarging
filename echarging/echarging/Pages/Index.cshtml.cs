@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
@@ -9,7 +9,18 @@ using Itinero.Osm.Vehicles;
 using NetTopologySuite.Features;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
+<<<<<<< HEAD
 
+=======
+/*
+using ProjNet;
+using ProjNet.CoordinateSystems;
+using System.Collections.Generic;
+using ProjNet.CoordinateSystems.Transformations;
+using GeoAPI;
+using GeoAPI.CoordinateSystems.Transformations;
+*/
+>>>>>>> main
 
 namespace echarging.Pages
 {
@@ -81,6 +92,35 @@ namespace echarging.Pages
             var features = router.Calculate(profile, start, end).ToFeatureCollection();
             // Remember to project data before buffer
             
+<<<<<<< HEAD
+=======
+            /*
+             string wktDK = "PROJCS[\"ETRS89 / DKTM4\",GEOGCS[\"ETRS89\",DATUM[\"European_Terrestrial_Reference_System_1989\"," +
+                 "SPHEROID[\"GRS 1980\",6378137,298.257222101," +
+                 "AUTHORITY[\"EPSG\",\"7019\"]],TOWGS84[0,0,0,0,0,0,0],AUTHORITY[\"EPSG\",\"6258\"]],PRIMEM[\"Greenwich\",0," +
+                 "AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433," +
+                 "AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4258\"]],PROJECTION[\"Transverse_Mercator\"]," +
+                 "PARAMETER[\"latitude_of_origin\",0],PARAMETER[\"central_meridian\",15]," +
+                 "PARAMETER[\"scale_factor\",1],PARAMETER[\"false_easting\",800000],PARAMETER[\"false_northing\",-5000000]," +
+                 "UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH]," +
+                 "AUTHORITY[\"EPSG\",\"4096\"]]";
+             GeoAPI.CoordinateSystems.ICoordinateSystem csDK =    
+                 ProjNet.Converters.WellKnownText.CoordinateSystemWktReader.Parse(wktDK) as GeoAPI.CoordinateSystems.ICoordinateSystem;
+
+             string wktWorld = "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563," +
+                 "AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]]," +
+                 "PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433," +
+                 "AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4326\"]]";
+             GeoAPI.CoordinateSystems.ICoordinateSystem csWorld =    
+                 ProjNet.Converters.WellKnownText.CoordinateSystemWktReader.Parse(wktWorld) as GeoAPI.CoordinateSystems.ICoordinateSystem;
+
+             CoordinateTransformationFactory ctfac = new CoordinateTransformationFactory();
+             ICoordinateTransformation trans = ctfac.CreateFromCoordinateSystems(csDK, csWorld);
+             double[] fromPoint = new double[] { -16.1, 32.88 };
+             double[] toPoint = trans.MathTransform.Transform(fromPoint);
+            */
+            
+>>>>>>> main
             var coordinates = features.Select(x => x.Geometry)
                 .SelectMany(x => x.Coordinates)
                 .ToArray();

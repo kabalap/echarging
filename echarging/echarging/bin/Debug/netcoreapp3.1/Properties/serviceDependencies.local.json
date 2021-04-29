@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "dependencies": {
     "mssql1": {
@@ -9,4 +10,17 @@
       "connectionId": "echargingContext"
     }
   }
+=======
+{
+  "dependencies": {
+    "mssql1": {
+      "type": "mssql.local",
+      "connectionId": "echargingContextConnection"
+    },
+    "mssql2": {
+      "type": "mssql.local",
+      "connectionId": "echargingContext"
+    }
+  }
+>>>>>>> main
 }
