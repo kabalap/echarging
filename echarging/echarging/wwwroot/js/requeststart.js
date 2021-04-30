@@ -20,12 +20,7 @@ function sendGeocodingRequest(startposition) {
             "X-Api-Key": API_KEY,
             "Accept-Language": "en"
         }
-
     })
-
-    function drawMarker(response) {  // We need to extract the coordinates from the response.
-        var coordinates = response.features[0].geometry.coordinates  // The coordinates are in a [<lng>, <lat>] format/
             .then(response => response.json()); // parses JSON response into native Javascript objects
-        var marker2 = L.marker(coordinates.reverse())
     }
 }

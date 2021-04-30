@@ -6,60 +6,59 @@
 </head>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
       integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-      crossorigin=""/>
+      crossorigin="" />
 
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
         integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
         crossorigin=""></script>
 
 <!-- vi kalder scriptet her. Det er placeret i wwwroot/js/location.js, for at asp.net kan finde ud af det.-->
-<script src="js/location.js"></script> 
-<script src="js/requeststart.js"></script>
-<script src="js/requestdest.js"></script>
+<script src="/js/location.js"></script>
+<script src="/js/requeststart.js"></script>
+<script src="/js/requestdest.js"></script>
 
 <style>
 
- #mapid { 
- width: 100vw; 
- height:  100vh;
- position: relative;
- }
- 
- .formBlock {
- max-width: 300px;
- background-color: #fff;
- border: 1px solid #ddd;
- position: absolute;
- top: 10px;
- left: 10px;
- padding: 10px;
- z-index: 999;
- box-shadow: 0 1px 5px rgba(0,0,0,0.65);
- border-radius: 5px;
- width: 100%;
- }
- 
- .input {
- padding: 10px;
- margin-bottom: 5px;
- width: 100%;
- border: 1px solid #ddd;
- font-size: 15px;
- border-radius: 3px;   
- }
- 
- .leaflet-top .leaflet-control {
-  margin-top: 175px;
- }
- 
+    #mapid {
+        width: 100vw;
+        height: 100vh;
+        position: relative;
+    }
+
+    .formBlock {
+        max-width: 300px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        padding: 10px;
+        z-index: 999;
+        box-shadow: 0 1px 5px rgba(0,0,0,0.65);
+        border-radius: 5px;
+        width: 100%;
+    }
+
+    .input {
+        padding: 10px;
+        margin-bottom: 5px;
+        width: 100%;
+        border: 1px solid #ddd;
+        font-size: 15px;
+        border-radius: 3px;
+    }
+
+    .leaflet-top .leaflet-control {
+        margin-top: 175px;
+    }
 </style>
 
 
-<div class="col-6">  
+<div class="col-6">
     <div class="formBlock">
         <form method="post" id="form">
-            <input type="text" name="start" class="input" id="start" placeholder="Startposition"/>
-            <input type="text" name="end" class="input" id="destination" placeholder="Destination"/>
+            <input type="text" name="startposition" class="input" id="startposition" placeholder="Startposition" />
+            <input type="text" name="destination" class="input" id="destination" placeholder="Destination" />
             <button type="submit" class="btn btn-dark" asp-page-handler="Win">Find rute </button>
         </form>
     </div>
@@ -75,45 +74,38 @@
 
     <!-- Dette script laver vores kort.-->
     <script>
-  
-        
-        
-    var mymap = L.map('mapid').setView([55.6760968, 12.5683371], 13);
-                                    L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/emerald-v8/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoia2FzcGVybW0iLCJhIjoiY2tscjN4NzBvMTh6YzJwcW1seXF3bThzdSJ9.UZQ-RnJeT5bZhmA10CsQJQ', {
-                                        attribution: '© <a href="https://www.mapbox.com/map-feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                                    }).addTo(mymap);
-                                    <!-- vi laver et layer, som er baseret på vores punkter i .js filen. chargers er variablen for alle punkterne -->
-                                    L.geoJson(chargers, {
-                                            style: function (feature) {
-                                                return {color: feature.properties.color};
-                                            },
-                                            onEachFeature: function (feature, layer) {
-                                                layer.bindPopup("<b>" + "Adresse: " + "</b>" + feature.properties.vejnavn + " " + feature.properties.husnr + "<br>" + "<b>" + "Udbyder: " + "</b>" 
-                                                + feature.properties.operator + "<br>" + "<b>" + "Effekt: " + "</b>" + feature.properties.ladestandertype);
-                                            },  
-                                            
-                                            
-                                            
-                                    }).addTo(mymap);
-                                    
-                                    L.marker(marker1).addTo(mymap);
-                                    console.log()
-                                    var routeDatter = JSON.parse(@Json.Serialize(ViewData["route"]));
-                                    if (routeDatter) {
-                                        // tegn routeDatter her
-                                       L.geoJSON(routeDatter).addTo(mymap);
-                                        
-                                        console.log();
-         
-        
-                                    }
-                                      
-    
-    
-     
-                                         </script>
-    
-    
+        var mymap = L.map('mapid').setView([55.6760968, 12.5683371], 13);
+        L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/emerald-v8/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoia2FzcGVybW0iLCJhIjoiY2tscjN4NzBvMTh6YzJwcW1seXF3bThzdSJ9.UZQ-RnJeT5bZhmA10CsQJQ', {
+            attribution: '© <a href="https://www.mapbox.com/map-feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(mymap);
+        // vi laver et layer, som er baseret på vores punkter i .js filen. chargers er variablen for alle punkterne
+        L.geoJson(chargers, {
+                style: function (feature) {
+                    return {color: feature.properties.color};
+                },
+                onEachFeature: function (feature, layer) {
+                    layer.bindPopup("<b>" + "Adresse: " + "</b>" + feature.properties.vejnavn + " " + feature.properties.husnr + "<br>" + "<b>" + "Udbyder: " + "</b>"
+                    + feature.properties.operator + "<br>" + "<b>" + "Effekt: " + "</b>" + feature.properties.ladestandertype);
+                },
+        }).addTo(mymap);
+        @if(ViewData.ContainsKey("destination") && ViewData.ContainsKey("startposition"))
+        {
+            <text>
+                console.log('set');
+                getCoordinates('@ViewData["startposition"]').then(coordinates => L.marker(coordinates).addTo(mymap));
+                getCoordinates('@ViewData["destination"]').then(coordinates => L.marker(coordinates).addTo(mymap));
+            </text>
+        }
+        var routeDatter = JSON.parse(@Json.Serialize(ViewData["route"]));
+        if (routeDatter) {
+            // tegn routeDatter her
+            L.geoJSON(routeDatter).addTo(mymap);
+
+            console.log();
+
+
+        }
+    </script>
 </div>
 
 
