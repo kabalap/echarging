@@ -73,7 +73,7 @@ namespace echarging.Pages
         public IActionResult OnPostWin(string startposition, string destination)
         {
             // load some routing data and build a routing network.
-            using var stream = new FileInfo(@"/Users/Kasper/Desktop/osm/output/routing.routerdb").OpenRead();
+            using var stream = new FileInfo(@"/osm/output/routing.routerdb").OpenRead();
             var routerDb = RouterDb.Deserialize(stream, RouterDbProfile.NoCache); // create the network for cars only.
             // create a router.
             var router = new Router(routerDb);  
@@ -121,7 +121,7 @@ namespace echarging.Pages
                 .ToArray();
             var lineString = GeometryFactory.Default.CreateLineString(coordinates);
             var bufferedData = lineString.Buffer(200);
-            var json = System.IO.File.ReadAllText(@"C:\Users\Kasper\Desktop\echarging\echarging\echarging\Pages\charge.json");
+            var json = System.IO.File.ReadAllText(@"/var/www/echarging/echarging/echarging/Pages/charge.json");
             var reader = new GeoJsonReader();
             var chargingStations = reader.Read<FeatureCollection>(json)
                 .Select(x => x.Geometry)
