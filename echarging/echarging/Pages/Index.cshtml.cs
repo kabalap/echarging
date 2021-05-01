@@ -9,6 +9,7 @@ using Itinero.Osm.Vehicles;
 using NetTopologySuite.Features;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
+
 /*
 using ProjNet;
 using ProjNet.CoordinateSystems;
@@ -17,6 +18,7 @@ using ProjNet.CoordinateSystems.Transformations;
 using GeoAPI;
 using GeoAPI.CoordinateSystems.Transformations;
 */
+
 
 namespace echarging.Pages
 {
@@ -68,10 +70,10 @@ namespace echarging.Pages
             
         }
 
-        public IActionResult OnPostWin()
+        public IActionResult OnPostWin(string startposition, string destination)
         {
             // load some routing data and build a routing network.
-            using var stream = new FileInfo(@"/Users/Kasper/Desktop/osm/output/routing.routerdb").OpenRead();
+            using var stream = new FileInfo(@"/osm/output/routing.routerdb").OpenRead();
             var routerDb = RouterDb.Deserialize(stream, RouterDbProfile.NoCache); // create the network for cars only.
             // create a router.
             var router = new Router(routerDb);  
@@ -88,7 +90,7 @@ namespace echarging.Pages
             var features = router.Calculate(profile, start, end).ToFeatureCollection();
             // Remember to project data before buffer
             
-            /*
+    /*
              string wktDK = "PROJCS[\"ETRS89 / DKTM4\",GEOGCS[\"ETRS89\",DATUM[\"European_Terrestrial_Reference_System_1989\"," +
                  "SPHEROID[\"GRS 1980\",6378137,298.257222101," +
                  "AUTHORITY[\"EPSG\",\"7019\"]],TOWGS84[0,0,0,0,0,0,0],AUTHORITY[\"EPSG\",\"6258\"]],PRIMEM[\"Greenwich\",0," +
@@ -113,22 +115,21 @@ namespace echarging.Pages
              double[] fromPoint = new double[] { -16.1, 32.88 };
              double[] toPoint = trans.MathTransform.Transform(fromPoint);
             */
-            
+
             var coordinates = features.Select(x => x.Geometry)
                 .SelectMany(x => x.Coordinates)
                 .ToArray();
             var lineString = GeometryFactory.Default.CreateLineString(coordinates);
             var bufferedData = lineString.Buffer(200);
-            var json = System.IO.File.ReadAllText(
-                "/Users/kasper/Desktop/echarging/echarging/echarging/Pages/charge.json");
+            var json = System.IO.File.ReadAllText(@"/var/www/echarging/echarging/echarging/Pages/charge.json");
             var reader = new GeoJsonReader();
             var chargingStations = reader.Read<FeatureCollection>(json)
                 .Select(x => x.Geometry)
                 .Where(x => x.Intersects(bufferedData));
 
             //var poi = o2.Where(o2 => o2.Intersects(bufferedData));
-        
-        
+
+
             /*
             using (StreamReader r = new StreamReader("charge.json"))
             {
@@ -140,6 +141,8 @@ namespace echarging.Pages
 
 
             // calculate a route.
+            ViewData["startposition"] = startposition;
+            ViewData["destination"] = destination;
             ViewData["route"] = router.Calculate(profile, start, end).ToGeoJson();
             return Page();
         }
