@@ -1,18 +1,9 @@
-<<<<<<< HEAD
 {
   "runtimeOptions": {
     "additionalProbingPaths": [
-      "/Users/kasperhansen/.dotnet/store/|arch|/|tfm|",
-      "/Users/kasperhansen/.nuget/packages"
+      "C:\\Users\\Kasper\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\Kasper\\.nuget\\packages",
+      "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
     ]
   }
-=======
-{
-  "runtimeOptions": {
-    "additionalProbingPaths": [
-      "/Users/kasperhansen/.dotnet/store/|arch|/|tfm|",
-      "/Users/kasperhansen/.nuget/packages"
-    ]
-  }
->>>>>>> main
 }
