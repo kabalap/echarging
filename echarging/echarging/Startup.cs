@@ -5,7 +5,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using echarging.Data;
+<<<<<<< Updated upstream
 using echarging.Service;
+=======
+using ProjNet.CoordinateSystems;
+>>>>>>> Stashed changes
 
 namespace echarging
 {

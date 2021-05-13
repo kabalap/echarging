@@ -184,3 +184,5 @@ C:\Users\Kasper\Desktop\echarging\echarging\echarging\obj\Debug\netcoreapp3.1\st
 C:\Users\Kasper\Desktop\echarging\echarging\echarging\obj\Debug\netcoreapp3.1\echarging.dll
 C:\Users\Kasper\Desktop\echarging\echarging\echarging\obj\Debug\netcoreapp3.1\echarging.pdb
 C:\Users\Kasper\Desktop\echarging\echarging\echarging\obj\Debug\netcoreapp3.1\echarging.genruntimeconfig.cache
+C:\Users\Kasper\Desktop\echarging\echarging\echarging\bin\Debug\netcoreapp3.1\GeoAPI.CoordinateSystems.dll
+C:\Users\Kasper\Desktop\echarging\echarging\echarging\bin\Debug\netcoreapp3.1\GeoAPI.dll
