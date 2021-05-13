@@ -7,28 +7,28 @@ using System;
 using Itinero;
 using Itinero.Geo;
 using Itinero.Osm.Vehicles;
-using NetTopologySuite.Features;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.IO;
-using ProjNet;
 using ProjNet.CoordinateSystems;
 using System.Collections.Generic;
 using ProjNet.CoordinateSystems.Transformations;
 using ProjNet.IO.CoordinateSystems;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using echarging.Service;
+using System.Threading.Tasks;
+using Itinero.Profiles;
 
 namespace echarging.Pages
 {
     public class IndexModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;
+        private readonly LocationService _locationService;
 
-        public IndexModel(ILogger<IndexModel> logger)
+        public IndexModel(ILogger<IndexModel> logger, LocationService locationService)
         {
             _logger = logger;
+            _locationService = locationService;
         }
 
 
@@ -36,61 +36,42 @@ namespace echarging.Pages
         {
             ViewData["route"] = "{}";
         }
-        /*
-        public IActionResult OnPostGo()
-        {
-            var routerDb = RouterDb.Deserialize(stream, RouterDbProfile.NoCache);
-            routerDb.AddContracted(routerDb.GetSupportedProfile("car"));
-            return Page();
-        }
-        */
-
-        public IActionResult OnPostGo()
-        {
-            /*
-            // load some routing data and build a routing network.
-            var routerDb = new RouterDb();
-            using (var stream = new FileInfo(@"Users/Kasper/Desktop/osm/denmark-latest.osm.pbf").OpenRead())
-            {
-                // create the network for cars only.
-                routerDb.LoadOsmData(stream, Vehicle.Car); 
-            }
-*/
-
-            // write the routerdb to disk.
-            using (var stream = new FileInfo(@"Users/Kasper/Desktop/osm/output/routing.routerdb").Open(FileMode.Create))
-            {
-                var routerDb = new RouterDb();
-                routerDb.Serialize(stream);
-            }
-
-
-
-            return Page();
-
-        }
 
         public double[] ToDoubleArray(Coordinate[] coordinates)
         {
             throw new NotImplementedException();
         }
 
+        private async Task<RouterPoint> getRouterPoint(Router router, Profile profile, String location)
+        {
+            var position = await _locationService.getLocation(location);
+            if (position == null)
+                return null;
 
-        public IActionResult OnPostWin(string startposition, string destination)
+            return router.Resolve(profile, (float) position.X, (float) position.Y);
+        }
+
+        public async Task<IActionResult> OnPostWin(string startPosition, string endPosition)
         {
             // load some routing data and build a routing network.
             using var stream = new FileInfo(@"C:\Users\Kasper\Desktop\osm\output\routing.routerdb").OpenRead();
             var routerDb = RouterDb.Deserialize(stream); // create the network for cars only.
+
             // create a router.
             var router = new Router(routerDb);
 
             // get a profile.
-            var profile = Vehicle.Car.Fastest(); // the default OSM car profile.
+            var profile = Itinero.Osm.Vehicles.Vehicle.Car.Fastest(); // the default OSM car profile.
 
-            // create a routerpoint from a location.
+            // Get start and destination
             // snaps the given location to the nearest routable edge.
-            var start = router.Resolve(profile, 55.681797f, 12.605089f);
-            var end = router.Resolve(profile, 55.663868644187815f, 12.412232911856966f);
+            var start = await getRouterPoint(router, profile, startPosition);
+            if (start == null)
+                return Page();
+
+            var end = await getRouterPoint(router, profile, endPosition);
+            if (end == null)
+                return Page();
 
             string path1 = @"C:\Users\Kasper\Desktop\wkt84DK.txt";
             string wktDK = System.IO.File.ReadAllText(path1);
@@ -118,14 +99,7 @@ namespace echarging.Pages
                     chargingStations.Add(new Point(transvestit[0], transvestit[1]));
                 }
             }
-/*
-            var tranformedList = trans.MathTransform.TransformList(chargingStations);
-            var transformedPoints = new List<Point>();
 
-            foreach (double[] d in tranformedList)
-            {
-                transformedPoints.Add(new Point(d[0], d[1]));
-            }*/
 
             // Convert from Itinero data format to NTS format such the data can be projected and buffered
             var features = router.Calculate(profile, start, end).ToFeatureCollection();
@@ -155,8 +129,8 @@ namespace echarging.Pages
 
             // calculate a route.
             ViewData["poi"] = done;
-            ViewData["startposition"] = startposition;
-            ViewData["destination"] = destination;
+            ViewData["startposition"] = startPosition;
+            ViewData["destination"] = endPosition;
             ViewData["route"] = router.Calculate(profile, start, end).ToGeoJson();
             return Page();
 

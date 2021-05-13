@@ -57,8 +57,8 @@
 <div class="col-6">
     <div class="formBlock">
         <form method="post" id="form">
-            <input type="text" name="startposition" class="input" id="startposition" placeholder="Startposition" />
-            <input type="text" name="destination" class="input" id="destination" placeholder="Destination" />
+            <input type="text" name="startPosition" class="input" id="startPosition" placeholder="Startposition" />
+            <input type="text" name="endPosition" class="input" id="endPosition" placeholder="Destination" />
             <button type="submit" class="btn btn-dark" asp-page-handler="Win">Find RUTE </button>
         </form>
     </div>
@@ -80,6 +80,11 @@
         }).addTo(mymap);
         // vi laver et layer, som er baseret på vores punkter i .js filen. chargers er variablen for alle punkterne
 
+        var markerIcon = new L.Icon({
+            iconSize: [50, 50],
+            iconAnchor: [25, 50],
+            iconUrl: 'marker1.png'
+        });
 
         // Add POIs
         @if(ViewData.ContainsKey("poi"))

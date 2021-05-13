@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using echarging.Data;
-
+using echarging.Service;
 
 namespace echarging
 {
@@ -24,6 +24,7 @@ namespace echarging
             services.AddRazorPages();
             services.AddDbContext<echargingContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddTransient<LocationService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
