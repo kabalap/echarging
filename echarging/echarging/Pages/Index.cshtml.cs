@@ -17,9 +17,8 @@ using ProjNet.CoordinateSystems.Transformations;
 using ProjNet.IO.CoordinateSystems;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-
-
-
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace echarging.Pages
 {
@@ -59,7 +58,7 @@ namespace echarging.Pages
 */
 
             // write the routerdb to disk.
-            using (var stream = new FileInfo(@"Users/kasperhansen/Desktop/osm/output/routing.routerdb").Open(FileMode.Create))
+            using (var stream = new FileInfo(@"Users/Kasper/Desktop/osm/output/routing.routerdb").Open(FileMode.Create))
             {
                 var routerDb = new RouterDb();
                 routerDb.Serialize(stream);
@@ -76,11 +75,12 @@ namespace echarging.Pages
             throw new NotImplementedException();
         }
 
+
         public IActionResult OnPostWin(string startposition, string destination)
         {
             // load some routing data and build a routing network.
             using var stream = new FileInfo(@"C:\Users\Kasper\Desktop\osm\output\routing.routerdb").OpenRead();
-            var routerDb = RouterDb.Deserialize(stream, RouterDbProfile.NoCache); // create the network for cars only.
+            var routerDb = RouterDb.Deserialize(stream); // create the network for cars only.
             // create a router.
             var router = new Router(routerDb);
 
@@ -89,44 +89,47 @@ namespace echarging.Pages
 
             // create a routerpoint from a location.
             // snaps the given location to the nearest routable edge.
-            var start = router.Resolve(profile, 55.408327f, 11.370692f);
+            var start = router.Resolve(profile, 55.681797f, 12.605089f);
             var end = router.Resolve(profile, 55.663868644187815f, 12.412232911856966f);
 
-            // Convert from Itinero data format to NTS format such the data can be projected and buffered
-            var features = router.Calculate(profile, start, end).ToFeatureCollection();
-            // Remember to project data before buffer
-
-            string wktDK = "PROJCS[\"ETRS89 / DKTM4\",GEOGCS[\"ETRS89\",DATUM[\"European_Terrestrial_Reference_System_1989\"," +
-            "SPHEROID[\"GRS 1980\",6378137,298.257222101," +
-            "AUTHORITY[\"EPSG\",\"7019\"]],TOWGS84[0,0,0,0,0,0,0],AUTHORITY[\"EPSG\",\"6258\"]],PRIMEM[\"Greenwich\",0," +
-            "AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433," +
-            "AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4258\"]],PROJECTION[\"Transverse_Mercator\"]," +
-            "PARAMETER[\"latitude_of_origin\",0],PARAMETER[\"central_meridian\",15]," +
-            "PARAMETER[\"scale_factor\",1],PARAMETER[\"false_easting\",800000],PARAMETER[\"false_northing\",-5000000]," +
-            "UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH]," +
-            "AUTHORITY[\"EPSG\",\"4096\"]]";
+            string path1 = @"C:\Users\Kasper\Desktop\wkt84DK.txt";
+            string wktDK = System.IO.File.ReadAllText(path1);
             var csDK = CoordinateSystemWktReader.Parse(wktDK) as CoordinateSystem;
 
-            string wktWorld = "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563," +
-                "AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]]," +
-                "PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433," +
-                "AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4326\"]]";
+            string path = @"C:\Users\Kasper\Desktop\wkt84test.txt";
+            string wktWorld = System.IO.File.ReadAllText(path);
             var csWorld = CoordinateSystemWktReader.Parse(wktWorld) as CoordinateSystem;
 
             CoordinateTransformationFactory ctfac = new CoordinateTransformationFactory();
             ICoordinateTransformation trans = ctfac.CreateFromCoordinateSystems(csWorld, csDK);
 
-            /*
-            ChargerLocation chargerPoints = JsonSerializer.Deserialize<ChargerLocation>(@"C:\Users\Kasper\Desktop\echarging\echarging\echarging\locations\location.geojson");
 
-            var chargerCoordinate = trans.MathTransform.TransformList(chargerPoints.Geometry.coordinates);
-            */
-            double[] test = new double[]{ 12.544402325328507, 55.66548314006038};
-            double[] transformtest = trans.MathTransform.Transform(test);
-            Point coorTest = new Point(transformtest[0], transformtest[1]);
+            var chargingStations = new List<Point>();
+            using (StreamReader reader = System.IO.File.OpenText(@"C:\Users\Kasper\Desktop\echarging\echarging\echarging\locations\location.geojson"))
+            {
+                JObject o = (JObject)JToken.ReadFrom(new JsonTextReader(reader));
+
+                JArray fitter = (JArray)o["features"];
+                foreach (var fit in fitter)
+                {
+                    JArray coords = (JArray)fit["geometry"]["coordinates"][0];
+
+                    var transvestit = trans.MathTransform.Transform(new[] { Double.Parse(coords[0].ToString()), Double.Parse(coords[1].ToString()) });
+                    chargingStations.Add(new Point(transvestit[0], transvestit[1]));
+                }
+            }
+/*
+            var tranformedList = trans.MathTransform.TransformList(chargingStations);
+            var transformedPoints = new List<Point>();
+
+            foreach (double[] d in tranformedList)
+            {
+                transformedPoints.Add(new Point(d[0], d[1]));
+            }*/
+
+            // Convert from Itinero data format to NTS format such the data can be projected and buffered
+            var features = router.Calculate(profile, start, end).ToFeatureCollection();
             
-
-
             var coordinates = features.Select(x => x.Geometry)
                .SelectMany(x => x.Coordinates)
                .Select(x =>
@@ -136,70 +139,30 @@ namespace echarging.Pages
                })
                .ToArray();
             var lineString = GeometryFactory.Default.CreateLineString(coordinates);
-            var bufferedData = lineString.Buffer(500);
+            var bufferedData = lineString.Buffer(200);
+            
 
-
+            var done = new List<double[]>();
+            var prepared = NetTopologySuite.Geometries.Prepared.PreparedGeometryFactory.Prepare(bufferedData);
             ICoordinateTransformation dkToWgs84 = ctfac.CreateFromCoordinateSystems(csDK, csWorld);
-            var a = bufferedData
-                .Coordinates
-                .SelectMany(x => new[] { x.X, x.Y })
-                .ToArray();
-
-            var wgs84 = dkToWgs84.MathTransform.Transform(a);
-
-            var poi = bufferedData.Contains(coorTest);
-
-            //var poi = o2.Where(o2 => o2.Intersects(bufferedData));
-
-
-            /*
-            using (StreamReader r = new StreamReader("charge.json"))
+            foreach (Point p in chargingStations)
             {
-                string json = r.ReadToEnd();
+                if (prepared.Intersects(p))
+                    done.Add(dkToWgs84.MathTransform.Transform(new[] { p.X, p.Y }));
             }
-            */
-
 
 
 
             // calculate a route.
+            ViewData["poi"] = done;
             ViewData["startposition"] = startposition;
             ViewData["destination"] = destination;
             ViewData["route"] = router.Calculate(profile, start, end).ToGeoJson();
             return Page();
+
+
         }
 
-        /*
-        public string Routing()
-        {
-            // load some routing data and build a routing network.
-            using (var stream = new FileInfo(@"/Users/Kasper/Desktop/osm/output/routing.routerdb").OpenRead())
-            {
-                var routerDb = RouterDb.Deserialize(stream, RouterDbProfile.NoCache); // create the network for cars only.
-                // create a router.
-                var router = new Router(routerDb);
 
-                // get a profile.
-                var profile = Vehicle.Car.Fastest(); // the default OSM car profile.
-
-                // create a routerpoint from a location.
-                // snaps the given location to the nearest routable edge.
-                var start = router.Resolve(profile, 57.0408543119709f, 9.946265898566171f);
-                var end = router.Resolve(profile, 55.663868644187815f, 12.412232911856966f);
-
-                // calculate a route.
-                var route = router.Calculate(profile, start, end);
-                using (var writer = new StreamWriter(@"/Users/Kasper/Desktop/osm/output/route.geojson"))
-                {
-                    route.WriteGeoJson(writer);
-                }
-
-                string allText = System.IO.File.ReadAllText(@"/Users/Kasper/Desktop/osm/output/route.geojson");
-                object jsonObject = JsonConvert.DeserializeObject(allText);
-                return jsonObject;
-
-            }
-        }
-        */
     }
 }

@@ -79,15 +79,34 @@
             attribution: '© <a href="https://www.mapbox.com/map-feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(mymap);
         // vi laver et layer, som er baseret på vores punkter i .js filen. chargers er variablen for alle punkterne
-        L.geoJson(chargers, {
-                style: function (feature) {
-                    return {color: feature.properties.color};
-                },
-                onEachFeature: function (feature, layer) {
-                    layer.bindPopup("<b>" + "Adresse: " + "</b>" + feature.properties.vejnavn + " " + feature.properties.husnr + "<br>" + "<b>" + "Udbyder: " + "</b>"
-                    + feature.properties.operator + "<br>" + "<b>" + "Effekt: " + "</b>" + feature.properties.ladestandertype);
-                },
-        }).addTo(mymap);
+
+
+        // Add POIs
+        @if(ViewData.ContainsKey("poi"))
+        {
+            foreach(var station in ViewData["poi"] as IEnumerable<double[]>)
+            {
+                <text>
+                    L.marker([@(station[1].ToString("0.0000", System.Globalization.CultureInfo.InvariantCulture)), @(station[0].ToString("0.0000", System.Globalization.CultureInfo.InvariantCulture))]).addTo(mymap);
+                </text>
+            }
+        }
+        else
+        {
+            <text>
+                L.geoJson(chargers, {
+                    style: function (feature) {
+                        return { color: feature.properties.color };
+                    },
+                    onEachFeature: function (feature, layer) {
+                        layer.bindPopup("<b>" + "Adresse: " + "</b>" + feature.properties.vejnavn + " " + feature.properties.husnr + "<br>" + "<b>" + "Udbyder: " + "</b>"
+                            + feature.properties.operator + "<br>" + "<b>" + "Effekt: " + "</b>" + feature.properties.ladestandertype);
+                    },
+                }).addTo(mymap);
+            </text>
+        }
+
+        // Add start and destination
         @if(ViewData.ContainsKey("destination") && ViewData.ContainsKey("startposition"))
         {
             <text>
