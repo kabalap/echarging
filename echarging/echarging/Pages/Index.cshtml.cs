@@ -17,6 +17,7 @@ using Newtonsoft.Json;
 using echarging.Service;
 using System.Threading.Tasks;
 using Itinero.Profiles;
+using echarging.Pages.Classes;
 
 namespace echarging.Pages
 {
@@ -24,22 +25,24 @@ namespace echarging.Pages
     {
         private readonly ILogger<IndexModel> _logger;
         private readonly LocationService _locationService;
+        private readonly routerService _routerService;
+        private readonly ChargerProjectService _chargerService;
+        private readonly WktService _wktService;
 
-        public IndexModel(ILogger<IndexModel> logger, LocationService locationService)
+        public IndexModel(ILogger<IndexModel> logger, LocationService locationService, routerService routerService, ChargerProjectService chargerService, WktService wktService)
         {
             _logger = logger;
             _locationService = locationService;
+            _routerService = routerService;
+            _chargerService = chargerService;
+            _wktService = wktService;
+
         }
 
 
         public void OnGet()
         {
             ViewData["route"] = "{}";
-        }
-
-        public double[] ToDoubleArray(Coordinate[] coordinates)
-        {
-            throw new NotImplementedException();
         }
 
         private async Task<RouterPoint> getRouterPoint(Router router, Profile profile, String location)
@@ -53,12 +56,9 @@ namespace echarging.Pages
 
         public async Task<IActionResult> OnPostWin(string startPosition, string endPosition)
         {
-            // load some routing data and build a routing network.
-            using var stream = new FileInfo(@"C:\Users\Kasper\Desktop\osm\output\routing.routerdb").OpenRead();
-            var routerDb = RouterDb.Deserialize(stream); // create the network for cars only.
 
             // create a router.
-            var router = new Router(routerDb);
+            var router = _routerService.router();
 
             // get a profile.
             var profile = Itinero.Osm.Vehicles.Vehicle.Car.Fastest(); // the default OSM car profile.
@@ -73,70 +73,33 @@ namespace echarging.Pages
             if (end == null)
                 return Page();
 
-            string path1 = @"C:\Users\Kasper\Desktop\wkt84DK.txt";
-            string wktDK = System.IO.File.ReadAllText(path1);
-            var csDK = CoordinateSystemWktReader.Parse(wktDK) as CoordinateSystem;
-
-            string path = @"C:\Users\Kasper\Desktop\wkt84test.txt";
-            string wktWorld = System.IO.File.ReadAllText(path);
-            var csWorld = CoordinateSystemWktReader.Parse(wktWorld) as CoordinateSystem;
-
-            CoordinateTransformationFactory ctfac = new CoordinateTransformationFactory();
-            ICoordinateTransformation trans = ctfac.CreateFromCoordinateSystems(csWorld, csDK);
-
-
-            var chargingStations = new List<Point>();
-            using (StreamReader reader = System.IO.File.OpenText(@"C:\Users\Kasper\Desktop\echarging\echarging\echarging\locations\location.geojson"))
-            {
-                JObject o = (JObject)JToken.ReadFrom(new JsonTextReader(reader));
-
-                JArray fitter = (JArray)o["features"];
-                foreach (var fit in fitter)
-                {
-                    JArray coords = (JArray)fit["geometry"]["coordinates"][0];
-
-                    var transvestit = trans.MathTransform.Transform(new[] { Double.Parse(coords[0].ToString()), Double.Parse(coords[1].ToString()) });
-                    chargingStations.Add(new Point(transvestit[0], transvestit[1]));
-                }
-            }
-
+            // creates tranformer used to project data from world to dk coordinatesystem
+            ICoordinateTransformation trans = _wktService.WorldToDk();
 
             // Convert from Itinero data format to NTS format such the data can be projected and buffered
-            var features = router.Calculate(profile, start, end).ToFeatureCollection();
-            
-            var coordinates = features.Select(x => x.Geometry)
-               .SelectMany(x => x.Coordinates)
-               .Select(x =>
-               {
-                   var transformed = trans.MathTransform.Transform(new[] { x.X, x.Y });
-                   return new Coordinate(transformed[0], transformed[1]);
-               })
-               .ToArray();
-            var lineString = GeometryFactory.Default.CreateLineString(coordinates);
-            var bufferedData = lineString.Buffer(200);
-            
+            var features = _routerService.router().Calculate(profile, start, end).ToFeatureCollection();
 
-            var done = new List<double[]>();
-            var prepared = NetTopologySuite.Geometries.Prepared.PreparedGeometryFactory.Prepare(bufferedData);
-            ICoordinateTransformation dkToWgs84 = ctfac.CreateFromCoordinateSystems(csDK, csWorld);
-            foreach (Point p in chargingStations)
-            {
-                if (prepared.Intersects(p))
-                    done.Add(dkToWgs84.MathTransform.Transform(new[] { p.X, p.Y }));
-            }
+            // Projects route and creates lineString with buffer
+            var project = new RouteProjection();
+            var bufferedData = project.buffer(features, trans);
 
+            //Projects each charger location 
+            var chargingStations = _chargerService.chargingStations(trans);
 
+            // creates tranformer used to project data from dk to world coordinatesystem
+            ICoordinateTransformation dkToWgs84 = _wktService.DkToWorld();
+
+            // Checks if each chargingstation intersects with buffereddata and projects chargingsstation back to original coordinatesystem if they do
+            var newPoi = new Poi();
+            var poi = newPoi.poi(bufferedData, chargingStations, dkToWgs84);
 
             // calculate a route.
-            ViewData["poi"] = done;
+            ViewData["poi"] = poi;
             ViewData["startposition"] = startPosition;
             ViewData["destination"] = endPosition;
             ViewData["route"] = router.Calculate(profile, start, end).ToGeoJson();
             return Page();
 
-
         }
-
-
     }
 }
