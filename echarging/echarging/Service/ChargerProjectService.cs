@@ -26,7 +26,7 @@ namespace echarging.Pages.Classes
         public List<Point> chargingStations(ICoordinateTransformation trans)
         {
             var chargingStations = new List<Point>();
-            using (StreamReader reader = File.OpenText(@"C:\Users\Kasper\Desktop\echarging\echarging\echarging\locations\location.geojson"))
+            using (StreamReader reader = File.OpenText(@"/root/locations/chargingstations.geojson"))
             {
                 JObject o = (JObject)JToken.ReadFrom(new JsonTextReader(reader));
 
