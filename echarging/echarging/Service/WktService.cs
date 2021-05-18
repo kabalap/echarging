@@ -25,11 +25,11 @@ namespace echarging.Service
 
         public ICoordinateTransformation WorldToDk()
         {
-            string path1 = @"C:\Users\Kasper\Desktop\echarging\echarging\echarging\Wkt\wkt84DK.txt";
+            string path1 = @"/root/wkt/wkt84DK.txt";
             string wktDK = System.IO.File.ReadAllText(path1);
             var csDK = CoordinateSystemWktReader.Parse(wktDK) as CoordinateSystem;
 
-            string path = @"C:\Users\Kasper\Desktop\echarging\echarging\echarging\Wkt\wkt84World.txt";
+            string path = @"/root/wkt/wkt84World.txt";
             string wktWorld = System.IO.File.ReadAllText(path);
             var csWorld = CoordinateSystemWktReader.Parse(wktWorld) as CoordinateSystem;
 
@@ -40,11 +40,11 @@ namespace echarging.Service
 
         public ICoordinateTransformation DkToWorld()
         {
-            string path1 = @"C:\Users\Kasper\Desktop\echarging\echarging\echarging\Wkt\wkt84DK.txt";
+            string path1 = @"/root/wkt/wkt84DK.txt";
             string wktDK = System.IO.File.ReadAllText(path1);
             var csDK = CoordinateSystemWktReader.Parse(wktDK) as CoordinateSystem;
 
-            string path = @"C:\Users\Kasper\Desktop\echarging\echarging\echarging\Wkt\wkt84World.txt";
+            string path = @"/root/wkt/wkt84World.txt";
             string wktWorld = System.IO.File.ReadAllText(path);
             var csWorld = CoordinateSystemWktReader.Parse(wktWorld) as CoordinateSystem;
 
