@@ -24,7 +24,7 @@ namespace echarging.Pages
     {
         public Router router()
         {
-            using var stream = new FileInfo(@"C:\Users\Kasper\Desktop\osm\output\routing.routerdb").OpenRead();
+            using var stream = new FileInfo(@"/root/osm/output/routing.routerdb").OpenRead();
             var routerDb = RouterDb.Deserialize(stream); // create the network for cars only.
             return new Router(routerDb);
         }
