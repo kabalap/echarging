@@ -20,13 +20,17 @@ using Itinero.Profiles;
 
 namespace echarging.Pages
 {
-    public class routerService
+    public class RouterService
     {
-        public Router router()
+        public Router Router { get; private set; }
+
+        public RouterService()
         {
+            // Initializing the router is expensive, ensure it's only done once
             using var stream = new FileInfo(@"/root/osm/output/routing.routerdb").OpenRead();
             var routerDb = RouterDb.Deserialize(stream); // create the network for cars only.
-            return new Router(routerDb);
+
+            Router = new Router(routerDb);
         }
     }
 }

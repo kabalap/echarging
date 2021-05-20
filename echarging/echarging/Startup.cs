@@ -5,16 +5,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using echarging.Data;
-<<<<<<< Updated upstream
 using echarging.Service;
-<<<<<<< HEAD
-=======
-using ProjNet.CoordinateSystems;
->>>>>>> Stashed changes
-=======
-using echarging.Pages;
 using echarging.Pages.Classes;
->>>>>>> main
+using echarging.Pages;
 
 namespace echarging
 {
@@ -34,7 +27,7 @@ namespace echarging
             services.AddDbContext<echargingContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddTransient<LocationService>();
-            services.AddSingleton<routerService>();
+            services.AddSingleton<RouterService>();
             services.AddSingleton<ChargerProjectService>();
             services.AddSingleton<WktService>();
         }
