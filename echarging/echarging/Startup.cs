@@ -7,9 +7,14 @@ using Microsoft.Extensions.Hosting;
 using echarging.Data;
 <<<<<<< Updated upstream
 using echarging.Service;
+<<<<<<< HEAD
 =======
 using ProjNet.CoordinateSystems;
 >>>>>>> Stashed changes
+=======
+using echarging.Pages;
+using echarging.Pages.Classes;
+>>>>>>> main
 
 namespace echarging
 {
@@ -29,6 +34,9 @@ namespace echarging
             services.AddDbContext<echargingContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddTransient<LocationService>();
+            services.AddSingleton<routerService>();
+            services.AddSingleton<ChargerProjectService>();
+            services.AddSingleton<WktService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
