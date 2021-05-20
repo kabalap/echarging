@@ -14,8 +14,6 @@
 
 <!-- vi kalder scriptet her. Det er placeret i wwwroot/js/location.js, for at asp.net kan finde ud af det.-->
 <script src="/js/location.js"></script>
-<script src="/js/requeststart.js"></script>
-<script src="/js/requestdest.js"></script>
 
 <style>
 
@@ -120,19 +118,15 @@
         @if(ViewData.ContainsKey("destination") && ViewData.ContainsKey("startposition"))
         {
             <text>
-                console.log('set');
                 getCoordinates('@ViewData["startposition"]').then(coordinates => L.marker(coordinates).addTo(mymap));
                 getCoordinates('@ViewData["destination"]').then(coordinates => L.marker(coordinates).addTo(mymap));
             </text>
         }
+
+        // Only draw the route if it is present
         var routeDatter = JSON.parse(@Json.Serialize(ViewData["route"]));
         if (routeDatter) {
-            // tegn routeDatter her
             L.geoJSON(routeDatter).addTo(mymap);
-
-            console.log();
-
-
         }
     </script>
 </div>

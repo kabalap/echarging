@@ -18,7 +18,7 @@ using echarging.Service;
 using System.Threading.Tasks;
 using Itinero.Profiles;
 
-namespace echarging.Pages
+namespace echarging.Service
 {
     public class RouterService
     {
