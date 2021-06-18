@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using echarging.Data;
 using echarging.Service;
 using echarging.Pages.Classes;
 using echarging.Pages;
@@ -24,8 +23,6 @@ namespace echarging
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
-            services.AddDbContext<echargingContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddTransient<LocationService>();
             services.AddSingleton<RouterService>();
             services.AddSingleton<ChargerProjectService>();

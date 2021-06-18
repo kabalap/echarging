@@ -43,7 +43,7 @@ namespace echarging.Pages
             return router.Resolve(profile, (float) position.X, (float) position.Y);
         }
 
-        public async Task<IActionResult> OnPostLocations(string startPosition, string endPosition)
+        public async Task<IActionResult> OnPostLocations(string startPosition, string endPosition, double Range)
         {
             // get a profile.
             var profile = Itinero.Osm.Vehicles.Vehicle.Car.Fastest(); // the default OSM car profile.
@@ -58,6 +58,9 @@ namespace echarging.Pages
             if (end == null)
                 return Page();
 
+            var distance = Range;
+
+
             // Creates transformer used to project data from world to dk coordinatesystem
             ICoordinateTransformation trans = _wktService.WorldToDk();
 
@@ -66,7 +69,7 @@ namespace echarging.Pages
             var features = calculatedRoute.ToFeatureCollection();
 
             // Projects route and creates lineString with buffer
-            var bufferedData = RouteProjection.getBufferedLineString(features, trans);
+            var bufferedData = RouteProjection.getBufferedLineString(features, trans, distance);
 
             //Projects each charger location 
             var chargingStations = _chargerService.chargingStations(trans);
@@ -84,7 +87,6 @@ namespace echarging.Pages
             ViewData["route"] = calculatedRoute.ToGeoJson();
 
             return Page();
-
         }
     }
 }

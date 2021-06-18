@@ -47,7 +47,7 @@
     }
 
     .leaflet-top .leaflet-control {
-        margin-top: 175px;
+        margin-top: 225px;
     }
 </style>
 
@@ -57,6 +57,7 @@
         <form method="post" id="form">
             <input type="text" name="startPosition" class="input" id="startPosition" placeholder="Startposition" />
             <input type="text" name="endPosition" class="input" id="endPosition" placeholder="Destination" />
+            <input type="number" name="Range" class="input" id="Range" placeholder="Max distance fra rute (m)" />
             <button type="submit" class="btn btn-dark" asp-page-handler="Locations">Find rute</button>
         </form>
     </div>
@@ -78,11 +79,18 @@
         }).addTo(mymap);
         // vi laver et layer, som er baseret på vores punkter i .js filen. chargers er variablen for alle punkterne
 
-        var markerIcon = new L.Icon({
-            iconSize: [50, 50],
-            iconAnchor: [25, 50],
-            iconUrl: 'marker1.png'
-        });
+        function createCustomIcon(feature, latlng) {
+            let myIcon = L.icon({
+                iconUrl: 'Images/marker1.png',
+                iconSize: [50, 50], // width and height of the image in pixels
+                iconAnchor: [25, 40], // point of the icon which will correspond to marker's location
+                popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
+            })
+            return L.marker(latlng, { icon: myIcon })
+        }
+        let myLayerOptions = {
+            pointToLayer: createCustomIcon
+        }
 
         // Add POIs
         @if(ViewData.ContainsKey("poi"))
@@ -114,19 +122,10 @@
             </text>
         }
 
-        // Add start and destination
-        @if(ViewData.ContainsKey("destination") && ViewData.ContainsKey("startposition"))
-        {
-            <text>
-                getCoordinates('@ViewData["startposition"]').then(coordinates => L.marker(coordinates).addTo(mymap));
-                getCoordinates('@ViewData["destination"]').then(coordinates => L.marker(coordinates).addTo(mymap));
-            </text>
-        }
-
         // Only draw the route if it is present
         var routeDatter = JSON.parse(@Json.Serialize(ViewData["route"]));
         if (routeDatter) {
-            L.geoJSON(routeDatter).addTo(mymap);
+            L.geoJSON(routeDatter, myLayerOptions).addTo(mymap);
         }
     </script>
 </div>

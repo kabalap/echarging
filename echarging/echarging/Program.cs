@@ -7,7 +7,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
-using echarging.Data;
 
 namespace echarging
 {
@@ -28,8 +27,6 @@ namespace echarging
                 var services = scope.ServiceProvider;
                 try
                 {
-                    var context = services.GetRequiredService<echargingContext>();
-                    DbInitializer.Initialize(context);
                 }
                 catch (Exception ex)
                 {

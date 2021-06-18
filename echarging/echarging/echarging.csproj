@@ -5,6 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\**" />
+    <Compile Remove="Migration\**" />
+    <Content Remove="Areas\**" />
+    <Content Remove="Migration\**" />
+    <EmbeddedResource Remove="Areas\**" />
+    <EmbeddedResource Remove="Migration\**" />
+    <None Remove="Areas\**" />
+    <None Remove="Migration\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="locations\location.geojson" />
   </ItemGroup>
 
@@ -29,11 +40,6 @@
     <PackageReference Include="ProjNET" Version="2.0.0" />
     <PackageReference Include="ProjNET4GeoAPI" Version="1.4.1" />
     <PackageReference Include="RazorScriptManager" Version="0.7.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Migration\" />
-    <Folder Include="Areas\" />
   </ItemGroup>
 
 </Project>
